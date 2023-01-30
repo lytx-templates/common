@@ -12,7 +12,7 @@ config_vault () {
     VAULT_RUNNER_ROLE_NAME=$(cat $CONFIG | jq .vault.runner_role_name)
     VAULT_ADDR=$(cat $CONFIG | jq .vault.addr)
     VAULT_MOUNT=/var/run/secrets/kubernetes.io/serviceaccount/:/var/run/secrets/kubernetes.io/serviceaccount/
-    VAULT_CLI=$DOCKER run --privileged -v $VAULT_MOUNT -e VAULT_ADDR=$VAULT_ADDR
+    VAULT_CLI="$DOCKER run --privileged -v $VAULT_MOUNT -e VAULT_ADDR=$VAULT_ADDR"
 }
 
 config_aws () {
@@ -45,7 +45,7 @@ authenticate_actions () {
 if [ -n "$GITHUB_ACTIONS"  ]
 then
     config_build_path
-    vault_config
+    config_vault
     authenticate_actions
 else 
     authenticate
