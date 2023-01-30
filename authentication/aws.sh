@@ -16,12 +16,12 @@ config_vault () {
 }
 
 config_aws () {
-    export ECR_URI=$(cat $CONFIG | jq .aws.ecr.uri)
-    export ECR_REGION=$(cat $CONFIG | jq .aws.ecr.region)
-    export AWS_ACCOUNT_ID=$(cat $CONFIG | jq .aws.account_id)
-    export AWS_ASSUMED_ENV=$(cat $CONFIG | jq .aws.assumed_env)
-    export AWS_ASSUMED_ROLE_NAME=$(cat $CONFIG | jq .aws.assumed_role_name)
-    export AWS_ASSUMED_ROLE_TTL=$(cat $CONFIG | jq .aws.assumed_role_ttl)
+    ECR_URI=$(cat $CONFIG | jq .aws.ecr.uri)
+    ECR_REGION=$(cat $CONFIG | jq .aws.ecr.region)
+    AWS_ACCOUNT_ID=$(cat $CONFIG | jq .aws.account_id)
+    AWS_ASSUMED_ENV=$(cat $CONFIG | jq .aws.assumed_env)
+    AWS_ASSUMED_ROLE_NAME=$(cat $CONFIG | jq .aws.assumed_role_name)
+    AWS_ASSUMED_ROLE_TTL=$(cat $CONFIG | jq .aws.assumed_role_ttl)
 }
 
 config_build_path () {
@@ -46,6 +46,7 @@ if [ -n "$GITHUB_ACTIONS"  ]
 then
     config_build_path
     config_vault
+    config_aws
     authenticate_actions
 else 
     authenticate
