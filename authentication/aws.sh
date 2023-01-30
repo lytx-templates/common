@@ -32,7 +32,7 @@ config_build_path () {
 authenticate_actions () {
 	mkdir $BUILD_PATH/.aws
     ln -s $BUILD_PATH/.aws ~/.aws
-    VAULT_TOKEN=$($VAULT_CLI vault write -format=json auth/$VAULT_AUTH_PATH/login role=$VAULT_RUNNER_ROLE_NAME jwt=@/var/run/secrets/kubernetes.io/serviceaccount/token | jq -c '.auth.client_token')
+    VAULT_TOKEN=$($VAULT_CLI vault write -format=json auth/$VAULT_AUTH_PATH/login role=$VAULT_RUNNER_ROLE_NAME jwt=@/var/run/secrets/kubernetes.io/serviceaccount/token | jq '.auth.client_token')
     echo $VAULT_TOKEN
     ASSUMED_ROLE_CREDS=$($VAULT_CLI -e VAULT_TOKEN=$VAULT_TOKEN vault write -format=json aws-$AWS_ASSUMED_ENV-$AWS_ACCOUNT_ID/sts/$AWS_ASSUMED_ROLE_NAME ttl=$AWS_ASSUMED_ROLE_TTL | jq '.')
     AWS_ACCESS_KEY_ID=$(echo $ASSUMED_ROLE_CREDS | jq '.data.access_key')
